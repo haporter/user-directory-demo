@@ -8,13 +8,64 @@
 
 import UIKit
 
+enum DirectoryState: String {
+    case loading
+    case empty
+    case loaded
+}
+
 class DirectoryStateViewController: UIViewController {
     
     @IBOutlet weak var stateContainerView: UIView!
     
+    var state: DirectoryState = .loading
+    var currentChildVC: UIViewController? {
+        get {
+            var vc: UIViewController? = nil
+            switch state {
+            case .loading:
+                vc = loadingVC
+            case .empty:
+                vc = emptyStateVC
+            case .loaded:
+                vc = directoryListVC
+            }
+            return vc
+        }
+    }
+    
+    private lazy var loadingVC: LoadingViewController = {
+        return AppStoryboard.Directory.instance.instantiateViewController(withIdentifier: LoadingViewController.storyboardID) as! LoadingViewController
+    }()
+    
+    private lazy var emptyStateVC: EmptyStateViewController = {
+        return AppStoryboard.Directory.instance.instantiateViewController(withIdentifier: EmptyStateViewController.storyboardID) as! EmptyStateViewController
+    }()
+    
+    private lazy var directoryListVC: DirectoryListTableViewController = {
+        return AppStoryboard.Directory.instance.instantiateViewController(withIdentifier: DirectoryListTableViewController.storyboardID) as! DirectoryListTableViewController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        IndividualController.getIndividuals { (individuals) in
+            
+        }
+        updateUI()
     }
-
+    
+    func updateUI() {
+        self.remove(childViewController: currentChildVC)
+        var vc: UIViewController
+        switch state {
+        case .loading:
+            vc = loadingVC
+        case .empty:
+            vc = emptyStateVC
+        case .loaded:
+            vc = directoryListVC
+        }
+        self.add(asChildViewController: vc, to: stateContainerView)
+    }
 }
