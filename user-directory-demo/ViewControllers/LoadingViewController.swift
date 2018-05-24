@@ -10,6 +10,8 @@ import UIKit
 
 class LoadingViewController: UIViewController {
 
+    @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

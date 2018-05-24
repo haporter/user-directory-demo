@@ -10,8 +10,8 @@ import UIKit
 
 class DirectoryStateViewController: UIViewController {
     
+    @IBOutlet weak var stateContainerView: UIView!
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
