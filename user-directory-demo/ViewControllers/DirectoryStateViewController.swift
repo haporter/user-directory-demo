@@ -18,7 +18,14 @@ class DirectoryStateViewController: UIViewController {
     
     @IBOutlet weak var stateContainerView: UIView!
     
-    var state: DirectoryState = .loading
+    var state: DirectoryState = .loading {
+        didSet {
+            DispatchQueue.main.async {
+                self.updateUI()
+            }
+        }
+    }
+    
     var currentChildVC: UIViewController? {
         get {
             var vc: UIViewController? = nil
@@ -50,7 +57,7 @@ class DirectoryStateViewController: UIViewController {
         super.viewDidLoad()
 
         IndividualController.getIndividuals { (individuals) in
-            
+            self.state = individuals.count > 0 ? .loaded : .empty
         }
         updateUI()
     }
@@ -64,6 +71,7 @@ class DirectoryStateViewController: UIViewController {
         case .empty:
             vc = emptyStateVC
         case .loaded:
+            directoryListVC.update(with: IndividualController.individuals)
             vc = directoryListVC
         }
         self.add(asChildViewController: vc, to: stateContainerView)

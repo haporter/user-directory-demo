@@ -8,11 +8,14 @@
 
 import Foundation
 
-fileprivate struct Results: Codable {
-    let individuals: [Individual]
+
+fileprivate struct Results: Codable {   // This struct is only intended to help parse
+    let individuals: [Individual]       //  the JSON returned from the API call //
 }
 
 class IndividualController {
+    
+    static var individuals: [Individual] = []
     
     private static let individualsDirectoryURLString = "https://edge.ldscdn.org/mobile/interview/directory"
     
@@ -25,6 +28,7 @@ class IndividualController {
                 do {
                     let results = try decoder.decode(Results.self, from: data)
                     completion(results.individuals)
+                    IndividualController.individuals = results.individuals
                     print("I have this many individuals: \(results.individuals.count)")
                 } catch let error {
                     print(error)
