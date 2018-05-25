@@ -12,6 +12,8 @@
 		24201B0420B75A2200442581 /* IndividualController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24201B0320B75A2200442581 /* IndividualController.swift */; };
 		24201B0920B75B5600442581 /* Individual.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24201B0820B75B5600442581 /* Individual.storyboard */; };
 		24201B0B20B75BCC00442581 /* Individual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24201B0A20B75BCC00442581 /* Individual.swift */; };
+		24201B0E20B8A0AE00442581 /* IndividualTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24201B0C20B8A0AE00442581 /* IndividualTableViewCell.swift */; };
+		24201B0F20B8A0AE00442581 /* IndividualTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24201B0D20B8A0AE00442581 /* IndividualTableViewCell.xib */; };
 		2470E22720B67D7700B4A256 /* AppStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2470E22620B67D7700B4A256 /* AppStoryboard.swift */; };
 		2470E22A20B67DDA00B4A256 /* DirectoryStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2470E22920B67DDA00B4A256 /* DirectoryStateViewController.swift */; };
 		2470E22D20B67E1D00B4A256 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2470E22C20B67E1D00B4A256 /* LoadingViewController.swift */; };
@@ -31,6 +33,8 @@
 		24201B0320B75A2200442581 /* IndividualController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualController.swift; sourceTree = "<group>"; };
 		24201B0820B75B5600442581 /* Individual.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Individual.storyboard; sourceTree = "<group>"; };
 		24201B0A20B75BCC00442581 /* Individual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Individual.swift; sourceTree = "<group>"; };
+		24201B0C20B8A0AE00442581 /* IndividualTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualTableViewCell.swift; sourceTree = "<group>"; };
+		24201B0D20B8A0AE00442581 /* IndividualTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IndividualTableViewCell.xib; sourceTree = "<group>"; };
 		2470E22620B67D7700B4A256 /* AppStoryboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStoryboard.swift; sourceTree = "<group>"; };
 		2470E22920B67DDA00B4A256 /* DirectoryStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryStateViewController.swift; sourceTree = "<group>"; };
 		2470E22C20B67E1D00B4A256 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +76,15 @@
 				24201B0A20B75BCC00442581 /* Individual.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		24201B1020B8A0BF00442581 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				24201B0C20B8A0AE00442581 /* IndividualTableViewCell.swift */,
+				24201B0D20B8A0AE00442581 /* IndividualTableViewCell.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		2470E22820B67D7F00B4A256 /* Helpers */ = {
@@ -129,6 +142,7 @@
 				24201B0720B75AE600442581 /* Models */,
 				2470E22B20B67DDE00B4A256 /* ViewControllers */,
 				24201B0220B7551F00442581 /* Controllers */,
+				24201B1020B8A0BF00442581 /* Views */,
 				2470E22820B67D7F00B4A256 /* Helpers */,
 				24B3E6E220B60B6300416AD3 /* Assets.xcassets */,
 				24B3E6E420B60B6300416AD3 /* LaunchScreen.storyboard */,
@@ -195,6 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24201B0F20B8A0AE00442581 /* IndividualTableViewCell.xib in Resources */,
 				2470E23620B6802300B4A256 /* Directory.storyboard in Resources */,
 				24B3E6E620B60B6300416AD3 /* LaunchScreen.storyboard in Resources */,
 				24B3E6E320B60B6300416AD3 /* Assets.xcassets in Resources */,
@@ -210,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24201B0E20B8A0AE00442581 /* IndividualTableViewCell.swift in Sources */,
 				2470E23320B67F0800B4A256 /* IndividualDetailViewController.swift in Sources */,
 				2470E22F20B67E7500B4A256 /* DirectoryListTableViewController.swift in Sources */,
 				24201B0420B75A2200442581 /* IndividualController.swift in Sources */,

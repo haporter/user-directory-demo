@@ -35,3 +35,10 @@ extension UIViewController {
         viewController?.removeFromParentViewController()
     }
 }
+
+extension UIColor {
+    static let jediColor = UIColor(red: 0.635, green: 0.451, blue: 0.200, alpha: 1.00)
+    static let resistanceColor = UIColor(red: 0.239, green: 0.525, blue: 0.886, alpha: 1.00)
+    static let firstOrderColor = UIColor(red: 0.647, green: 0.137, blue: 0.075, alpha: 1.00)
+    static let sithColor = UIColor(red: 0.133, green: 0.122, blue: 0.125, alpha: 1.00)
+}

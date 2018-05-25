@@ -8,13 +8,21 @@
 
 import UIKit
 
+fileprivate let kIndividualCellIdentifier = "individualCell"
+fileprivate let kIndividualNibName = "IndividualTableViewCell"
+
 class DirectoryListTableViewController: UITableViewController {
     
-    private var individuals: [Individual] = []
+    private var individuals: [Individual] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.register(UINib(nibName: kIndividualNibName, bundle: .main), forCellReuseIdentifier: kIndividualCellIdentifier)
     }
     
     func update(with individuals: [Individual]) {
@@ -34,11 +42,19 @@ class DirectoryListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: kIndividualCellIdentifier, for: indexPath) as? IndividualTableViewCell else {
+            return UITableViewCell()
+        }
         
         let individual = individuals[indexPath.row]
-        cell.textLabel?.text = individual.firstName + " " + individual.lastName
+        cell.configureCell(forIndividual: individual)
         
         return cell
+    }
+    
+    // MARK: - Table view delegate
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
 }
