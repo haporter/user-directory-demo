@@ -28,26 +28,26 @@
                                 <rect key="frame" x="15" y="0.0" width="290" height="116.5"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SIX-UU-msP">
-                                        <rect key="frame" x="0.0" y="14.5" width="87.5" height="87.5"/>
+                                        <rect key="frame" x="0.0" y="14.5" width="60" height="87.5"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5ni-fN-w0W">
-                                                <rect key="frame" x="0.0" y="0.0" width="87.5" height="87.5"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="joe" translatesAutoresizingMaskIntoConstraints="NO" id="5ni-fN-w0W">
+                                                <rect key="frame" x="0.0" y="0.0" width="60" height="87.5"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="5ni-fN-w0W" secondAttribute="bottom" id="IBw-RB-PYj"/>
                                             <constraint firstAttribute="trailing" secondItem="5ni-fN-w0W" secondAttribute="trailing" id="Ldh-aX-k2Q"/>
-                                            <constraint firstAttribute="width" secondItem="SIX-UU-msP" secondAttribute="height" multiplier="1:1" id="rMV-FX-n4S"/>
+                                            <constraint firstAttribute="width" secondItem="SIX-UU-msP" secondAttribute="height" multiplier="11:16" id="rMV-FX-n4S"/>
                                             <constraint firstItem="5ni-fN-w0W" firstAttribute="leading" secondItem="SIX-UU-msP" secondAttribute="leading" id="rMe-jR-Njx"/>
                                             <constraint firstItem="5ni-fN-w0W" firstAttribute="top" secondItem="SIX-UU-msP" secondAttribute="top" id="yk6-Ro-cAF"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eeT-kf-wzP">
-                                        <rect key="frame" x="97.5" y="0.0" width="136" height="116.5"/>
+                                        <rect key="frame" x="70" y="0.0" width="163.5" height="116.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Luke Skywalker" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVn-ZZ-SS8">
-                                                <rect key="frame" x="0.0" y="0.0" width="136" height="116.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="163.5" height="116.5"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                 <color key="textColor" red="0.77254901960784317" green="0.73725490196078436" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -111,5 +111,6 @@
     </objects>
     <resources>
         <image name="Jedi_symbol" width="472" height="480"/>
+        <image name="joe" width="551" height="677"/>
     </resources>
 </document>

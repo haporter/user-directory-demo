@@ -15,6 +15,9 @@ fileprivate struct Results: Codable {   // This struct is only intended to help 
 
 class IndividualController {
     
+    static let operationQueue = OperationQueue()
+    static var operationsCache = [String: Operation]()
+    
     static var individuals: [Individual] = []
     
     private static let individualsDirectoryURLString = "https://edge.ldscdn.org/mobile/interview/directory"

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Andrew Porter. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Individual: Codable {
     
@@ -33,11 +33,17 @@ struct Individual: Codable {
         }
     }
     
-    let id: Int
+    private let _id: Int
+    var id: String {
+        get {
+            return String(_id)
+        }
+    }
     let firstName: String
     let lastName: String
     let birthdate: String
     private let profilePictureURLString: String
+    var profileImage: UIImage? = nil
     let forceSensitive: Bool
     private let _affiliation: String
     var affiliation: Affiliation {
@@ -47,7 +53,7 @@ struct Individual: Codable {
     }
     
     private enum CodingKeys: String, CodingKey {
-        case id
+        case _id = "id"
         case firstName
         case lastName
         case birthdate
@@ -64,7 +70,7 @@ struct Individual: Codable {
          forceSensitive: Bool,
          affiliation: String) {
         
-        self.id = id
+        self._id = id
         self.firstName = firstName
         self.lastName = lastName
         self.birthdate = birthdate
@@ -72,4 +78,30 @@ struct Individual: Codable {
         self.forceSensitive = forceSensitive
         self._affiliation = affiliation
     }
+    
+    mutating func getProfileImage() {
+        guard let imageURL = URL(string: profilePictureURLString),
+              let data = try? Data(contentsOf: imageURL),
+              let image = UIImage(data: data) else {
+                return
+        }
+        self.profileImage = image
+    }
+    
+    func imageLoadOperation() -> ImageLoadOperation? {
+        if profileImage != nil { return nil }
+        
+        return ImageLoadOperation(self)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

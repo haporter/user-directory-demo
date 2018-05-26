@@ -19,11 +19,17 @@ class IndividualTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        avatarView.layer.cornerRadius = 8
+        avatarView.layer.borderWidth = 3
+        avatarView.layer.borderColor = UIColor.white.cgColor
     }
     
     func configureCell(forIndividual individual: Individual) {
         nameLabel.text = "\(individual.firstName) \(individual.lastName)"
         setColorAndSymbol(forAffiliation: individual.affiliation)
+        if let image = individual.profileImage {
+            avatarImageView.image = image
+        }
     }
     
     fileprivate func setColorAndSymbol(forAffiliation affiliation: Individual.Affiliation) {

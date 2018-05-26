@@ -57,4 +57,40 @@ class DirectoryListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? IndividualTableViewCell else { return }
+        let individual = individuals[indexPath.row]
+        
+        let cellUpdateHandler: (Individual) -> () = { (individual) in
+            cell.configureCell(forIndividual: individual)
+            IndividualController.operationsCache.removeValue(forKey: individual.id)
+        }
+        
+        if IndividualController.operationsCache[individual.id] == nil, let loadOperation = individual.imageLoadOperation() {
+            loadOperation.loadingHandler = cellUpdateHandler
+            IndividualController.operationQueue.addOperation(loadOperation)
+            IndividualController.operationsCache[individual.id] = loadOperation
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let individual = individuals[indexPath.row]
+        IndividualController.operationsCache.removeValue(forKey: individual.id)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
