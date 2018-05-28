@@ -78,6 +78,15 @@ class DirectoryListTableViewController: UITableViewController {
         let individual = individuals[indexPath.row]
         IndividualController.operationsCache.removeValue(forKey: individual.id)
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let detailVC = AppStoryboard.Individual.instance.instantiateViewController(withIdentifier: IndividualDetailViewController.storyboardID) as? IndividualDetailViewController else { return }
+        
+        let individual = individuals[indexPath.row]
+        detailVC.configure(withIndividual: individual)
+        
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
 }
 
 

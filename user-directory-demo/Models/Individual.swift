@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Individual: Codable {
+class Individual: Codable {
     
     enum Affiliation: String {
         case jedi = "Jedi"
@@ -79,7 +79,7 @@ struct Individual: Codable {
         self._affiliation = affiliation
     }
     
-    mutating func getProfileImage() {
+    func getProfileImage() {
         guard let imageURL = URL(string: profilePictureURLString),
               let data = try? Data(contentsOf: imageURL),
               let image = UIImage(data: data) else {

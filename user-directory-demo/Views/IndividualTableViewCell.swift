@@ -20,7 +20,7 @@ class IndividualTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         avatarView.layer.cornerRadius = 8
-        avatarView.layer.borderWidth = 3
+        avatarView.layer.borderWidth = 2
         avatarView.layer.borderColor = UIColor.white.cgColor
     }
     
