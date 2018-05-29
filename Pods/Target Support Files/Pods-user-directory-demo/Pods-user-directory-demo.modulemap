@@ -1,0 +1,6 @@
+framework module Pods_user_directory_demo {
+  umbrella header "Pods-user-directory-demo-umbrella.h"
+
+  export *
+  module * { export * }
+}
