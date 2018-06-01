@@ -41,7 +41,7 @@ class IndividualDetailViewController: UIViewController {
     }
     
     private func setProfileImage() {
-        guard let image = individual.profileImage else { return }
+        guard let image = individual.loadImageFromDisc() else { return }
         profileImageView.image = image
     }
     

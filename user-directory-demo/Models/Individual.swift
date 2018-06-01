@@ -35,15 +35,12 @@ class Individual: Object, Codable {
         }
     }
     
-    @objc dynamic private var _id: Int = 0
-    var id: String {
-        return String(_id)
-    }
+    @objc dynamic var id: String = ""
     @objc dynamic var firstName: String = ""
     @objc dynamic var lastName: String = ""
     @objc dynamic var birthdate: String = ""
-    @objc private var profilePictureURLString: String = ""
-    var profileImage: UIImage? = nil
+    @objc dynamic var profilePictureURLString: String = ""
+    @objc dynamic var profileImageFileURL: String = ""
     @objc dynamic var forceSensitive: Bool = false
     @objc dynamic private var _affiliation: String = ""
     var affiliation: Affiliation {
@@ -51,11 +48,15 @@ class Individual: Object, Codable {
     }
     
     override static func primaryKey() -> String? {
-        return "_id"
+        return "id"
     }
     
+//    override static func ignoredProperties() -> [String] {
+//        return ["profileImage"]
+//    }
+    
     private enum CodingKeys: String, CodingKey {
-        case _id = "id"
+        case id = "id"
         case firstName
         case lastName
         case birthdate
@@ -64,7 +65,7 @@ class Individual: Object, Codable {
         case _affiliation = "affiliation"
     }
     
-    convenience init(id: Int,
+    convenience init(id: String,
          firstName: String,
          lastName: String,
          birthdate: String,
@@ -73,7 +74,7 @@ class Individual: Object, Codable {
          affiliation: String) {
         self.init()
         
-        self._id = id
+        self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.birthdate = birthdate
@@ -85,7 +86,7 @@ class Individual: Object, Codable {
     convenience required init(from decoder: Decoder) throws {
         let container = try! decoder.container(keyedBy: CodingKeys.self)
         
-        let id = try! container.decode(Int.self, forKey: ._id)
+        let id = try! container.decode(Int.self, forKey: .id)
         let firstName = try! container.decode(String.self, forKey: .firstName)
         let lastName = try! container.decode(String.self, forKey: .lastName)
         let birthdate = try! container.decode(String.self, forKey: .birthdate)
@@ -93,7 +94,7 @@ class Individual: Object, Codable {
         let forceSensitive = try! container.decode(Bool.self, forKey: .forceSensitive)
         let affiliation = try! container.decode(String.self, forKey: ._affiliation)
         
-        self.init(id: id, firstName: firstName, lastName: lastName, birthdate: birthdate, profilePicURLString: picURL, forceSensitive: forceSensitive, affiliation: affiliation)
+        self.init(id: String(id), firstName: firstName, lastName: lastName, birthdate: birthdate, profilePicURLString: picURL, forceSensitive: forceSensitive, affiliation: affiliation)
     }
     
     required init() {
@@ -109,18 +110,59 @@ class Individual: Object, Codable {
     }
     
     func getProfileImage() {
-        guard let imageURL = URL(string: profilePictureURLString),
-              let data = try? Data(contentsOf: imageURL),
-              let image = UIImage(data: data) else {
-                return
+        guard let imageURL = URL(string: profilePictureURLString) else { return }
+        do {
+            let data = try Data(contentsOf: imageURL)
+            let image = UIImage(data: data)
+            saveImageToDocs(image)
+        } catch let error {
+            print(error)
         }
-        self.profileImage = image
+        
     }
     
     func imageLoadOperation() -> ImageLoadOperation? {
-        if profileImage != nil { return nil }
+        if !profileImageFileURL.isEmpty { return nil }
         
-        return ImageLoadOperation(self)
+        let individualRef = ThreadSafeReference(to: self)
+        
+        return ImageLoadOperation(individualRef)
+    }
+    
+    private func saveImageToDocs(_ image: UIImage?) {
+        if let image = image, let jpegData = UIImageJPEGRepresentation(image, 0.8) {
+            let filePath = getDocumentsDirectory().appendingPathComponent(self.firstName + self.lastName + ".jpeg")
+            do {
+                try jpegData.write(to: filePath)
+                let realm = try! Realm()
+                try! realm.write {
+                    self.profileImageFileURL = filePath.absoluteString
+                }
+                print(filePath.absoluteString)
+            } catch let error {
+                print(error)
+            }
+        }
+       
+    }
+    
+    func loadImageFromDisc() -> UIImage? {
+        
+        var image: UIImage? = nil
+        let docsDir = FileManager.SearchPathDirectory.documentDirectory
+        let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(docsDir, userDomainMask, true)
+        if let firstPath = paths.first {
+            let imageURL = URL(fileURLWithPath: firstPath).appendingPathComponent(self.firstName + self.lastName + ".jpeg")
+            let loadedImage = UIImage(contentsOfFile: imageURL.path)
+            image = loadedImage
+        }
+        return image
+    }
+    
+    private func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
 }
 

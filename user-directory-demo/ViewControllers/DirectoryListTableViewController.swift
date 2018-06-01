@@ -7,13 +7,15 @@
 //
 
 import UIKit
+import Realm
+import RealmSwift
 
 fileprivate let kIndividualCellIdentifier = "individualCell"
 fileprivate let kIndividualNibName = "IndividualTableViewCell"
 
 class DirectoryListTableViewController: UITableViewController {
     
-    private var individuals: [Individual] = [] {
+    private var individuals: Results<Individual>? {
         didSet {
             tableView.reloadData()
         }
@@ -23,22 +25,25 @@ class DirectoryListTableViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.register(UINib(nibName: kIndividualNibName, bundle: .main), forCellReuseIdentifier: kIndividualCellIdentifier)
+        
+        let realm = try! Realm()
+        self.individuals = realm.objects(Individual.self)
     }
     
     func update(with individuals: [Individual]) {
-        self.individuals = individuals
+//        self.individuals = individuals
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return self.individuals == nil ? 0 : 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return individuals.count
+        return individuals!.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -46,7 +51,7 @@ class DirectoryListTableViewController: UITableViewController {
             return UITableViewCell()
         }
         
-        let individual = individuals[indexPath.row]
+        let individual = individuals![indexPath.row]
         cell.configureCell(forIndividual: individual)
         
         return cell
@@ -60,29 +65,33 @@ class DirectoryListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? IndividualTableViewCell else { return }
-        let individual = individuals[indexPath.row]
+        let individual = individuals![indexPath.row]
         
-        let cellUpdateHandler: (Individual) -> () = { (individual) in
+        let cellUpdateHandler: (ThreadSafeReference<Individual>) -> () = { (individualRef) in
+            let realm = try! Realm()
+            guard let individual = realm.resolve(individualRef) else {
+                fatalError("realm object no longer exits")
+            }
             cell.configureCell(forIndividual: individual)
-            IndividualController.operationsCache.removeValue(forKey: individual.id)
+            IndividualController.operationsCache.removeValue(forKey: String(individual.id))
         }
         
-        if IndividualController.operationsCache[individual.id] == nil, let loadOperation = individual.imageLoadOperation() {
+        if IndividualController.operationsCache[String(individual.id)] == nil, let loadOperation = individual.imageLoadOperation() {
             loadOperation.loadingHandler = cellUpdateHandler
             IndividualController.operationQueue.addOperation(loadOperation)
-            IndividualController.operationsCache[individual.id] = loadOperation
+            IndividualController.operationsCache[String(individual.id)] = loadOperation
         }
     }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let individual = individuals[indexPath.row]
-        IndividualController.operationsCache.removeValue(forKey: individual.id)
+        let individual = individuals![indexPath.row]
+        IndividualController.operationsCache.removeValue(forKey: String(individual.id))
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = AppStoryboard.Individual.instance.instantiateViewController(withIdentifier: IndividualDetailViewController.storyboardID) as? IndividualDetailViewController else { return }
         
-        let individual = individuals[indexPath.row]
+        let individual = individuals![indexPath.row]
         detailVC.configure(withIndividual: individual)
         
         self.navigationController?.pushViewController(detailVC, animated: true)

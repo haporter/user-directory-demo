@@ -27,7 +27,7 @@ class IndividualTableViewCell: UITableViewCell {
     func configureCell(forIndividual individual: Individual) {
         nameLabel.text = "\(individual.firstName) \(individual.lastName)"
         setColorAndSymbol(forAffiliation: individual.affiliation)
-        if let image = individual.profileImage {
+        if !individual.profileImageFileURL.isEmpty, let image = individual.loadImageFromDisc() {
             avatarImageView.image = image
         }
     }

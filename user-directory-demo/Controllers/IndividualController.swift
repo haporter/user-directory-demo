@@ -34,6 +34,11 @@ class IndividualController {
                     let results = try decoder.decode(Results.self, from: data)
                     
                     let realm = try! Realm()
+                    
+                    try! realm.write {
+                        realm.deleteAll()
+                    }
+                    
                     for individual in results.individuals {
                         try! realm.write {
                             realm.add(individual)
@@ -41,7 +46,6 @@ class IndividualController {
                     }
                     
                     completion(results.individuals)
-                    IndividualController.individuals = results.individuals
                     print("I have this many individuals: \(results.individuals.count)")
                 } catch let error {
                     print(error)
