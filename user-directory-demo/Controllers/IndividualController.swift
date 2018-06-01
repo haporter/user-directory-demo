@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Realm
+import RealmSwift
 
 
 fileprivate struct Results: Codable {   // This struct is only intended to help parse
@@ -30,6 +32,14 @@ class IndividualController {
                 let decoder = JSONDecoder()
                 do {
                     let results = try decoder.decode(Results.self, from: data)
+                    
+                    let realm = try! Realm()
+                    for individual in results.individuals {
+                        try! realm.write {
+                            realm.add(individual)
+                        }
+                    }
+                    
                     completion(results.individuals)
                     IndividualController.individuals = results.individuals
                     print("I have this many individuals: \(results.individuals.count)")

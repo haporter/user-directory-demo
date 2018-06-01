@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Realm
+import RealmSwift
 
-class Individual: Codable {
+class Individual: Object, Codable {
     
     enum Affiliation: String {
         case jedi = "Jedi"
@@ -33,23 +35,23 @@ class Individual: Codable {
         }
     }
     
-    private let _id: Int
+    @objc dynamic private var _id: Int = 0
     var id: String {
-        get {
-            return String(_id)
-        }
+        return String(_id)
     }
-    let firstName: String
-    let lastName: String
-    let birthdate: String
-    private let profilePictureURLString: String
+    @objc dynamic var firstName: String = ""
+    @objc dynamic var lastName: String = ""
+    @objc dynamic var birthdate: String = ""
+    @objc private var profilePictureURLString: String = ""
     var profileImage: UIImage? = nil
-    let forceSensitive: Bool
-    private let _affiliation: String
+    @objc dynamic var forceSensitive: Bool = false
+    @objc dynamic private var _affiliation: String = ""
     var affiliation: Affiliation {
-        get {
-            return Affiliation(affiliation: _affiliation)
-        }
+        return Affiliation(affiliation: _affiliation)
+    }
+    
+    override static func primaryKey() -> String? {
+        return "_id"
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -62,13 +64,14 @@ class Individual: Codable {
         case _affiliation = "affiliation"
     }
     
-    init(id: Int,
+    convenience init(id: Int,
          firstName: String,
          lastName: String,
          birthdate: String,
          profilePicURLString: String,
          forceSensitive: Bool,
          affiliation: String) {
+        self.init()
         
         self._id = id
         self.firstName = firstName
@@ -77,6 +80,32 @@ class Individual: Codable {
         self.profilePictureURLString = profilePicURLString
         self.forceSensitive = forceSensitive
         self._affiliation = affiliation
+    }
+    
+    convenience required init(from decoder: Decoder) throws {
+        let container = try! decoder.container(keyedBy: CodingKeys.self)
+        
+        let id = try! container.decode(Int.self, forKey: ._id)
+        let firstName = try! container.decode(String.self, forKey: .firstName)
+        let lastName = try! container.decode(String.self, forKey: .lastName)
+        let birthdate = try! container.decode(String.self, forKey: .birthdate)
+        let picURL = try! container.decode(String.self, forKey: .profilePictureURLString)
+        let forceSensitive = try! container.decode(Bool.self, forKey: .forceSensitive)
+        let affiliation = try! container.decode(String.self, forKey: ._affiliation)
+        
+        self.init(id: id, firstName: firstName, lastName: lastName, birthdate: birthdate, profilePicURLString: picURL, forceSensitive: forceSensitive, affiliation: affiliation)
+    }
+    
+    required init() {
+        super.init()
+    }
+    
+    required init(value: Any, schema: RLMSchema) {
+        super.init(value: value, schema: schema)
+    }
+    
+    required init(realm: RLMRealm, schema: RLMObjectSchema) {
+        super.init(realm: realm, schema: schema)
     }
     
     func getProfileImage() {
@@ -93,15 +122,15 @@ class Individual: Codable {
         
         return ImageLoadOperation(self)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
+
+
+
+
+
+
+
+
+
+
+
