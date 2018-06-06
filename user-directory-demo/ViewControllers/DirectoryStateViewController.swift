@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Realm
+import RealmSwift
 
 enum DirectoryState: String {
     case loading
@@ -56,9 +58,16 @@ class DirectoryStateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        IndividualController.getIndividuals { (individuals) in
-            self.state = individuals.count > 0 ? .loaded : .empty
+        let realm = try! Realm()
+        let individuals = realm.objects(Individual.self)
+        if individuals.count == 0 {
+            IndividualController.getIndividuals { (individuals) in
+                self.state = individuals.count > 0 ? .loaded : .empty
+            }
+        } else {
+            self.state = .loaded
         }
+        
         updateUI()
     }
     
@@ -71,7 +80,6 @@ class DirectoryStateViewController: UIViewController {
         case .empty:
             vc = emptyStateVC
         case .loaded:
-            directoryListVC.update(with: IndividualController.individuals)
             vc = directoryListVC
         }
         self.add(asChildViewController: vc, to: stateContainerView)

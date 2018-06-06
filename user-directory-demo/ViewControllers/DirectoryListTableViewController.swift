@@ -29,20 +29,14 @@ class DirectoryListTableViewController: UITableViewController {
         let realm = try! Realm()
         self.individuals = realm.objects(Individual.self)
     }
-    
-    func update(with individuals: [Individual]) {
-//        self.individuals = individuals
-    }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return self.individuals == nil ? 0 : 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return individuals!.count
     }
     

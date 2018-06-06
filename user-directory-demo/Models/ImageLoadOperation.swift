@@ -33,14 +33,12 @@ class ImageLoadOperation: Operation {
         
         if let loadingHandler = loadingHandler {
             DispatchQueue.main.async {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    guard let individual = realm.object(ofType: Individual.self, forPrimaryKey: primaryKey) else {
-                        fatalError("can't get object from realm")
-                    }
-                    let individualRef = ThreadSafeReference(to: individual)
-                    loadingHandler(individualRef)
+                let realm = try! Realm()
+                guard let individual = realm.object(ofType: Individual.self, forPrimaryKey: primaryKey) else {
+                    fatalError("can't get object from realm")
                 }
+                let individualRef = ThreadSafeReference(to: individual)
+                loadingHandler(individualRef)
             }
         }
     }

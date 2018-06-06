@@ -29,6 +29,8 @@ class IndividualTableViewCell: UITableViewCell {
         setColorAndSymbol(forAffiliation: individual.affiliation)
         if !individual.profileImageFileURL.isEmpty, let image = individual.loadImageFromDisc() {
             avatarImageView.image = image
+        } else {
+            avatarImageView.image = #imageLiteral(resourceName: "joe")
         }
     }
     
