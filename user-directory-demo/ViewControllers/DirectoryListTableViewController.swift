@@ -12,6 +12,11 @@ import RealmSwift
 
 fileprivate let kIndividualCellIdentifier = "individualCell"
 fileprivate let kIndividualNibName = "IndividualTableViewCell"
+fileprivate let kAffiliation = "affiliation"
+fileprivate let kName = "name"
+fileprivate let kNone = "none"
+fileprivate let kSort = "sortKey"
+fileprivate let kChecked = "checked"
 
 class DirectoryListTableViewController: UITableViewController {
     
@@ -26,8 +31,54 @@ class DirectoryListTableViewController: UITableViewController {
 
         tableView.register(UINib(nibName: kIndividualNibName, bundle: .main), forCellReuseIdentifier: kIndividualCellIdentifier)
         
+        sortDirectory()
+    }
+    
+    @objc func showSortOptions() {
+        let sortAlert = UIAlertController(title: "Sort", message: "Choose an option to sort the directory.", preferredStyle: .actionSheet)
+        let affiliationSortAction = UIAlertAction(title: "Affiliation", style: .default) { (_) in
+            UserDefaults.standard.set(kAffiliation, forKey: kSort)
+            self.sortDirectory()
+        }
+        let nameSortAction = UIAlertAction(title: "Name", style: .default) { (_) in
+            UserDefaults.standard.set(kName, forKey: kSort)
+            self.sortDirectory()
+        }
+        let noneSortAction = UIAlertAction(title: "None", style: .default) { (_) in
+            UserDefaults.standard.set(kNone, forKey: kSort)
+            self.sortDirectory()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let sortValue = UserDefaults.standard.value(forKey: kSort) as? String
+        switch sortValue {
+        case kAffiliation:
+            affiliationSortAction.setValue(true, forKey: kChecked)
+        case kName:
+            nameSortAction.setValue(true, forKey: kChecked)
+        default:
+            noneSortAction.setValue(true, forKey: kChecked)
+        }
+        
+        sortAlert.addAction(affiliationSortAction)
+        sortAlert.addAction(nameSortAction)
+        sortAlert.addAction(noneSortAction)
+        sortAlert.addAction(cancelAction)
+        
+        self.present(sortAlert, animated: true, completion: nil)
+    }
+    
+    fileprivate func sortDirectory() {
         let realm = try! Realm()
-        self.individuals = realm.objects(Individual.self)
+        let sortCriteria = UserDefaults.standard.value(forKey: kSort) as? String
+        switch sortCriteria {
+        case kAffiliation:
+            self.individuals = realm.objects(Individual.self).sorted(byKeyPath: "_affiliation")
+        case kName:
+            self.individuals = realm.objects(Individual.self).sorted(byKeyPath: "firstName")
+        default:
+            self.individuals = realm.objects(Individual.self)
+        }
     }
 
     // MARK: - Table view data source

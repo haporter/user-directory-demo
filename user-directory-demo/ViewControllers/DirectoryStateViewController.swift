@@ -57,6 +57,8 @@ class DirectoryStateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sort", style: .plain, target: directoryListVC, action: #selector(DirectoryListTableViewController.showSortOptions))
 
         let realm = try! Realm()
         let individuals = realm.objects(Individual.self)

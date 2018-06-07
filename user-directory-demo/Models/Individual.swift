@@ -51,10 +51,6 @@ class Individual: Object, Codable {
         return "id"
     }
     
-//    override static func ignoredProperties() -> [String] {
-//        return ["profileImage"]
-//    }
-    
     private enum CodingKeys: String, CodingKey {
         case id = "id"
         case firstName
