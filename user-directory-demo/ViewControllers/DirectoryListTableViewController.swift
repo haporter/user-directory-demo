@@ -148,7 +148,9 @@ class DirectoryListTableViewController: UITableViewController {
             guard let individual = realm.resolve(individualRef) else {
                 fatalError("realm object no longer exits")
             }
-            cell.configureCell(forIndividual: individual)
+            DispatchQueue.main.async {
+                cell.configureCell(forIndividual: individual)
+            }
             IndividualController.operationsCache.removeValue(forKey: String(individual.id))
         }
         
@@ -157,12 +159,6 @@ class DirectoryListTableViewController: UITableViewController {
             IndividualController.operationQueue.addOperation(loadOperation)
             IndividualController.operationsCache[String(individual.id)] = loadOperation
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard individuals!.count > indexPath.row else { return }
-        let individual = individuals![indexPath.row]
-        IndividualController.operationsCache.removeValue(forKey: String(individual.id))
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -35,18 +35,18 @@ class IndividualController {
                     
                     let realm = try! Realm()
                     
-                    try! realm.write {
+                    try realm.write {
                         realm.deleteAll()
                     }
                     
                     for individual in results.individuals {
-                        try! realm.write {
+                        try realm.write {
                             realm.add(individual)
                         }
                     }
                     
-                    completion(results.individuals)
-                    print("I have this many individuals: \(results.individuals.count)")
+                    completion(results.individuals)     // Comment this line
+//                    completion([])                    // and uncomment this line to test empty state
                 } catch let error {
                     print(error)
                 }

@@ -15,7 +15,8 @@ class IndividualTableViewCell: UITableViewCell {
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var affiliationImageView: UIImageView!
-
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -28,8 +29,10 @@ class IndividualTableViewCell: UITableViewCell {
         nameLabel.text = "\(individual.firstName) \(individual.lastName)"
         setColorAndSymbol(forAffiliation: individual.affiliation)
         if !individual.profileImageFileURL.isEmpty, let image = individual.loadImageFromDisc() {
+            loadingIndicator.stopAnimating()
             avatarImageView.image = image
         } else {
+            loadingIndicator.startAnimating()
             avatarImageView.image = #imageLiteral(resourceName: "joe")
         }
     }

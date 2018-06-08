@@ -163,10 +163,9 @@ class Individual: Object, Codable {
             do {
                 try jpegData.write(to: filePath)
                 let realm = try! Realm()
-                try! realm.write {
+                try realm.write {
                     self.profileImageFileURL = filePath.absoluteString
                 }
-                print(filePath.absoluteString)
             } catch let error {
                 print(error)
             }

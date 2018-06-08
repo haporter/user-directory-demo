@@ -59,20 +59,7 @@ class DirectoryStateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: directoryListVC, action: #selector(DirectoryListTableViewController.showSortOptions))
-        let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showFilterPicker))
-        self.navigationItem.rightBarButtonItems = [filterButton, sortButton]
-        
-
-        let realm = try! Realm()
-        let individuals = realm.objects(Individual.self)
-        if individuals.count == 0 {
-            IndividualController.getIndividuals { (individuals) in
-                self.state = individuals.count > 0 ? .loaded : .empty
-            }
-        } else {
-            self.state = .loaded
-        }
+        getDirectory()
         
         updateUI()
     }
@@ -85,11 +72,33 @@ class DirectoryStateViewController: UIViewController {
             vc = loadingVC
         case .empty:
             vc = emptyStateVC
+            emptyStateVC.delegate = self
         case .loaded:
+            showSortFilter()
             vc = directoryListVC
             directoryListVC.filterPickerDelegate = self
         }
         self.add(asChildViewController: vc, to: stateContainerView)
+    }
+    
+    fileprivate func getDirectory() {
+        state = .loading
+        
+        let realm = try! Realm()
+        let individuals = realm.objects(Individual.self)
+        if individuals.count == 0 {
+            IndividualController.getIndividuals { (individuals) in
+                self.state = individuals.count > 0 ? .loaded : .empty
+            }
+        } else {
+            self.state = .loaded
+        }
+    }
+    
+    fileprivate func showSortFilter() {
+        let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: directoryListVC, action: #selector(DirectoryListTableViewController.showSortOptions))
+        let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(showFilterPicker))
+        self.navigationItem.rightBarButtonItems = [filterButton, sortButton]
     }
     
     @objc func showFilterPicker() {
@@ -145,9 +154,13 @@ class DirectoryStateViewController: UIViewController {
     }
 }
 
-extension DirectoryStateViewController: FilterPickerDelegate {
+extension DirectoryStateViewController: FilterPickerDelegate, EmptyStateDelegate {
     
     func didSelectFilter() {
         hidePickerView()
+    }
+    
+    func didSelectTryAgain() {
+        getDirectory()
     }
 }

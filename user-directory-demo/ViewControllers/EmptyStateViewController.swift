@@ -8,11 +8,16 @@
 
 import UIKit
 
+protocol EmptyStateDelegate {
+    func didSelectTryAgain()
+}
+
 class EmptyStateViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    
+    var delegate: EmptyStateDelegate?
+    
+    @IBAction func tryAgainButtonTapped(_ sender: UIButton) {
+        delegate?.didSelectTryAgain()
     }
     
 }

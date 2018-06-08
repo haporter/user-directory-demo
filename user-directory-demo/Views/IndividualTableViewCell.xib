@@ -33,11 +33,16 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="joe" translatesAutoresizingMaskIntoConstraints="NO" id="5ni-fN-w0W">
                                                 <rect key="frame" x="0.0" y="0.0" width="60" height="87.5"/>
                                             </imageView>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="uwx-VR-dYM">
+                                                <rect key="frame" x="20" y="34" width="20" height="20"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="5ni-fN-w0W" secondAttribute="bottom" id="IBw-RB-PYj"/>
                                             <constraint firstAttribute="trailing" secondItem="5ni-fN-w0W" secondAttribute="trailing" id="Ldh-aX-k2Q"/>
+                                            <constraint firstItem="uwx-VR-dYM" firstAttribute="centerX" secondItem="SIX-UU-msP" secondAttribute="centerX" id="Qrh-2k-6nh"/>
+                                            <constraint firstItem="uwx-VR-dYM" firstAttribute="centerY" secondItem="SIX-UU-msP" secondAttribute="centerY" id="ipC-Q1-glO"/>
                                             <constraint firstAttribute="width" secondItem="SIX-UU-msP" secondAttribute="height" multiplier="11:16" id="rMV-FX-n4S"/>
                                             <constraint firstItem="5ni-fN-w0W" firstAttribute="leading" secondItem="SIX-UU-msP" secondAttribute="leading" id="rMe-jR-Njx"/>
                                             <constraint firstItem="5ni-fN-w0W" firstAttribute="top" secondItem="SIX-UU-msP" secondAttribute="top" id="yk6-Ro-cAF"/>
@@ -104,6 +109,7 @@
                 <outlet property="avatarImageView" destination="5ni-fN-w0W" id="aVd-vs-BNb"/>
                 <outlet property="avatarView" destination="SIX-UU-msP" id="vni-rP-J0I"/>
                 <outlet property="colorView" destination="g5w-O5-MFk" id="RXv-LL-gIu"/>
+                <outlet property="loadingIndicator" destination="uwx-VR-dYM" id="wTu-qB-BMQ"/>
                 <outlet property="nameLabel" destination="hVn-ZZ-SS8" id="dwy-e9-0xR"/>
             </connections>
             <point key="canvasLocation" x="40" y="90.5"/>
