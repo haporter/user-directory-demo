@@ -12,11 +12,16 @@ import RealmSwift
 
 fileprivate let kIndividualCellIdentifier = "individualCell"
 fileprivate let kIndividualNibName = "IndividualTableViewCell"
-fileprivate let kAffiliation = "affiliation"
-fileprivate let kName = "name"
+fileprivate let kAffiliation = "_affiliation"
+fileprivate let kName = "firstName"
 fileprivate let kNone = "none"
+let kFilter = "filterKey"
 fileprivate let kSort = "sortKey"
 fileprivate let kChecked = "checked"
+
+protocol FilterPickerDelegate {
+    func didSelectFilter()
+}
 
 class DirectoryListTableViewController: UITableViewController {
     
@@ -25,6 +30,8 @@ class DirectoryListTableViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    
+    var filterPickerDelegate: FilterPickerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +86,26 @@ class DirectoryListTableViewController: UITableViewController {
         default:
             self.individuals = realm.objects(Individual.self)
         }
+        
+        
+    }
+    
+    private func filterDirectory() {
+        let affiliationIntValue = UserDefaults.standard.integer(forKey: kFilter)
+        let realm = try! Realm()
+
+        if Individual.Affiliation(int: affiliationIntValue) == .joeShmo {
+            self.individuals = realm.objects(Individual.self)
+        } else {
+            let affiliation = Individual.Affiliation(int: affiliationIntValue)
+            let predicate = NSPredicate(format: "_affiliation = %@", affiliation.rawValue)
+            self.individuals = realm.objects(Individual.self).filter(predicate)
+        }
+    }
+    
+    @objc func filterDoneButtonTapped(_ sender: UIButton) {
+        filterPickerDelegate?.didSelectFilter()
+        filterDirectory()
     }
 
     // MARK: - Table view data source
@@ -100,6 +127,10 @@ class DirectoryListTableViewController: UITableViewController {
         cell.configureCell(forIndividual: individual)
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
     }
     
     // MARK: - Table view delegate
@@ -129,6 +160,7 @@ class DirectoryListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard individuals!.count > indexPath.row else { return }
         let individual = individuals![indexPath.row]
         IndividualController.operationsCache.removeValue(forKey: String(individual.id))
     }
@@ -143,6 +175,36 @@ class DirectoryListTableViewController: UITableViewController {
     }
 }
 
+extension DirectoryListTableViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 5
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        var title = "None"
+        switch row {
+        case 1:
+            title = Individual.Affiliation.jedi.description()
+        case 2:
+            title = Individual.Affiliation.resistance.description()
+        case 3:
+            title = Individual.Affiliation.firstOrder.description()
+        case 4:
+            title = Individual.Affiliation.sith.description()
+        default:
+            break
+        }
+        return title
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        UserDefaults.standard.set(row, forKey: kFilter)
+    }
+}
 
 
 

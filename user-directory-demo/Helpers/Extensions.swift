@@ -47,5 +47,6 @@ extension UIColor {
     // Supporting Colors
     static let jet = UIColor(red: 0.200, green: 0.196, blue: 0.196, alpha: 1.00)
     static let navColor = UIColor(red: 0.780, green: 0.737, blue: 0.663, alpha: 1.00)
-    static let navTintColor = UIColor(red: 0.388, green: 0.765, blue: 0.922, alpha: 1.00)
+//    static let navTintColor = UIColor(red: 0.388, green: 0.765, blue: 0.922, alpha: 1.00)
+    static let navTintColor = UIColor(red: 0.176, green: 0.188, blue: 0.278, alpha: 1.00)
 }

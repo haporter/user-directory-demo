@@ -13,10 +13,10 @@ import RealmSwift
 class Individual: Object, Codable {
     
     enum Affiliation: String {
-        case jedi = "Jedi"
-        case resistance = "Resistance"
-        case firstOrder = "First Order"
-        case sith = "Sith"
+        case jedi = "jedi"
+        case resistance = "resistance"
+        case firstOrder = "first_order"
+        case sith = "sith"
         case joeShmo = "Joe Shmo"
         
         init(affiliation: String) {
@@ -33,6 +33,38 @@ class Individual: Object, Codable {
                 self = .joeShmo
             }
         }
+        
+        init(int: Int) {
+            switch int {
+            case 1:
+                self = .jedi
+            case 2:
+                self = .resistance
+            case 3:
+                self = .firstOrder
+            case 4:
+                self = .sith
+            default:
+                self = .joeShmo
+            }
+        }
+        
+        func description() -> String {
+            var description = ""
+            switch self {
+            case .jedi:
+                description = "Jedi"
+            case .resistance:
+                description = "Resistance"
+            case .firstOrder:
+                description = "First Order"
+            case .sith:
+                description = "Sith"
+            case .joeShmo:
+                description = "Joe Shmoe"
+            }
+            return description
+        }
     }
     
     @objc dynamic var id: String = ""
@@ -42,7 +74,7 @@ class Individual: Object, Codable {
     @objc dynamic var profilePictureURLString: String = ""
     @objc dynamic var profileImageFileURL: String = ""
     @objc dynamic var forceSensitive: Bool = false
-    @objc dynamic private var _affiliation: String = ""
+    @objc dynamic var _affiliation: String = ""
     var affiliation: Affiliation {
         return Affiliation(affiliation: _affiliation)
     }
@@ -90,7 +122,7 @@ class Individual: Object, Codable {
         let forceSensitive = try! container.decode(Bool.self, forKey: .forceSensitive)
         let affiliation = try! container.decode(String.self, forKey: ._affiliation)
         
-        self.init(id: String(id), firstName: firstName, lastName: lastName, birthdate: birthdate, profilePicURLString: picURL, forceSensitive: forceSensitive, affiliation: affiliation)
+        self.init(id: String(id), firstName: firstName, lastName: lastName, birthdate: birthdate, profilePicURLString: picURL, forceSensitive: forceSensitive, affiliation: affiliation.lowercased())
     }
     
     required init() {
