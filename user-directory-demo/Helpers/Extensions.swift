@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct Sorted {
+    var key: String
+    var ascending: Bool = true
+}
+
 extension UIViewController {
     public func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
         // add child view controller

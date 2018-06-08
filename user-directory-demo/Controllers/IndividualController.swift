@@ -11,7 +11,7 @@ import Realm
 import RealmSwift
 
 
-fileprivate struct Results: Codable {   // This struct is only intended to help parse
+fileprivate struct JSONResults: Codable {   // This struct is only intended to help parse
     let individuals: [Individual]       //  the JSON returned from the API call //
 }
 
@@ -31,7 +31,7 @@ class IndividualController {
             } else if let data = data {
                 let decoder = JSONDecoder()
                 do {
-                    let results = try decoder.decode(Results.self, from: data)
+                    let results = try decoder.decode(JSONResults.self, from: data)
                     
                     let realm = try! Realm()
                     
@@ -52,5 +52,21 @@ class IndividualController {
                 }
             }
         }
+    }
+    
+    static func localFetch(_ predicate: NSPredicate? = nil, sorted: Sorted? = nil, completion: @escaping (_ results: Results<Individual>) -> Void) {
+        guard let realm = try? Realm() else { return }
+        
+        var individuals = realm.objects(Individual.self)
+        
+        if let predicate = predicate {
+            individuals = individuals.filter(predicate)
+        }
+        
+        if let sorted = sorted {
+            individuals = individuals.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
+        }
+        
+        completion(individuals)
     }
 }

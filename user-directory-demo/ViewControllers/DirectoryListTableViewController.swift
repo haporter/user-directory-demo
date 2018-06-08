@@ -15,9 +15,9 @@ fileprivate let kIndividualNibName = "IndividualTableViewCell"
 fileprivate let kAffiliation = "_affiliation"
 fileprivate let kName = "firstName"
 fileprivate let kNone = "none"
-let kFilter = "filterKey"
 fileprivate let kSort = "sortKey"
 fileprivate let kChecked = "checked"
+public let kFilter = "filterKey"
 
 protocol FilterPickerDelegate {
     func didSelectFilter()
@@ -27,7 +27,9 @@ class DirectoryListTableViewController: UITableViewController {
     
     private var individuals: Results<Individual>? {
         didSet {
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -38,22 +40,22 @@ class DirectoryListTableViewController: UITableViewController {
 
         tableView.register(UINib(nibName: kIndividualNibName, bundle: .main), forCellReuseIdentifier: kIndividualCellIdentifier)
         
-        sortDirectory()
+        loadIndividuals()
     }
     
     @objc func showSortOptions() {
         let sortAlert = UIAlertController(title: "Sort", message: "Choose an option to sort the directory.", preferredStyle: .actionSheet)
         let affiliationSortAction = UIAlertAction(title: "Affiliation", style: .default) { (_) in
             UserDefaults.standard.set(kAffiliation, forKey: kSort)
-            self.sortDirectory()
+            self.loadIndividuals()
         }
         let nameSortAction = UIAlertAction(title: "Name", style: .default) { (_) in
             UserDefaults.standard.set(kName, forKey: kSort)
-            self.sortDirectory()
+            self.loadIndividuals()
         }
         let noneSortAction = UIAlertAction(title: "None", style: .default) { (_) in
-            UserDefaults.standard.set(kNone, forKey: kSort)
-            self.sortDirectory()
+            UserDefaults.standard.removeObject(forKey: kSort)
+            self.loadIndividuals()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
@@ -75,37 +77,27 @@ class DirectoryListTableViewController: UITableViewController {
         self.present(sortAlert, animated: true, completion: nil)
     }
     
-    fileprivate func sortDirectory() {
-        let realm = try! Realm()
-        let sortCriteria = UserDefaults.standard.value(forKey: kSort) as? String
-        switch sortCriteria {
-        case kAffiliation:
-            self.individuals = realm.objects(Individual.self).sorted(byKeyPath: "_affiliation")
-        case kName:
-            self.individuals = realm.objects(Individual.self).sorted(byKeyPath: "firstName")
-        default:
-            self.individuals = realm.objects(Individual.self)
+    fileprivate func loadIndividuals() {
+        var sorted: Sorted? = nil
+        var filter: NSPredicate? = nil
+        if let sortKey = UserDefaults.standard.value(forKey: kSort) as? String {
+            sorted = Sorted(key: sortKey, ascending: true)
         }
         
-        
-    }
-    
-    private func filterDirectory() {
         let affiliationIntValue = UserDefaults.standard.integer(forKey: kFilter)
-        let realm = try! Realm()
-
-        if Individual.Affiliation(int: affiliationIntValue) == .joeShmo {
-            self.individuals = realm.objects(Individual.self)
-        } else {
+        if affiliationIntValue != 0 {
             let affiliation = Individual.Affiliation(int: affiliationIntValue)
-            let predicate = NSPredicate(format: "_affiliation = %@", affiliation.rawValue)
-            self.individuals = realm.objects(Individual.self).filter(predicate)
+            filter = NSPredicate(format: "_affiliation = %@", affiliation.rawValue)
+        }
+        
+        IndividualController.localFetch(filter, sorted: sorted) { (individuals) in
+            self.individuals = individuals
         }
     }
     
     @objc func filterDoneButtonTapped(_ sender: UIButton) {
         filterPickerDelegate?.didSelectFilter()
-        filterDirectory()
+        loadIndividuals()
     }
 
     // MARK: - Table view data source
