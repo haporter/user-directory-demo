@@ -74,7 +74,7 @@ class Individual: Object, Codable {
     @objc dynamic var profilePictureURLString: String = ""
     @objc dynamic var profileImageFileURL: String = ""
     @objc dynamic var forceSensitive: Bool = false
-    @objc dynamic var _affiliation: String = ""
+    @objc private dynamic var _affiliation: String = ""
     var affiliation: Affiliation {
         return Affiliation(affiliation: _affiliation)
     }
