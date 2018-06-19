@@ -19,6 +19,23 @@ class Individual: Object, Codable {
         case sith = "sith"
         case joeShmo = "Joe Shmo"
         
+        var description: String {
+            var description = ""
+            switch self {
+            case .jedi:
+                description = "Jedi"
+            case .resistance:
+                description = "Resistance"
+            case .firstOrder:
+                description = "First Order"
+            case .sith:
+                description = "Sith"
+            case .joeShmo:
+                description = "Joe Shmoe"
+            }
+            return description
+        }
+        
         init(affiliation: String) {
             switch affiliation.lowercased() {
             case "jedi":
@@ -47,23 +64,6 @@ class Individual: Object, Codable {
             default:
                 self = .joeShmo
             }
-        }
-        
-        func description() -> String {
-            var description = ""
-            switch self {
-            case .jedi:
-                description = "Jedi"
-            case .resistance:
-                description = "Resistance"
-            case .firstOrder:
-                description = "First Order"
-            case .sith:
-                description = "Sith"
-            case .joeShmo:
-                description = "Joe Shmoe"
-            }
-            return description
         }
     }
     

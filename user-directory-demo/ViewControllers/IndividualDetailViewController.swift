@@ -49,7 +49,7 @@ class IndividualDetailViewController: UIViewController {
         nameLabel.text = individual.firstName + " " + individual.lastName
         birthLabel.text = individual.birthdate
         forceSensitiveLabel.text = individual.forceSensitive ? "YES" : "NO"
-        affiliationLabel.text = individual.affiliation.description()
+        affiliationLabel.text = individual.affiliation.description
     }
     
     private func setColorAndSymbol() {

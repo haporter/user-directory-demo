@@ -176,13 +176,13 @@ extension DirectoryListTableViewController: UIPickerViewDataSource, UIPickerView
         var title = "None"
         switch row {
         case 1:
-            title = Individual.Affiliation.jedi.description()
+            title = Individual.Affiliation.jedi.description
         case 2:
-            title = Individual.Affiliation.resistance.description()
+            title = Individual.Affiliation.resistance.description
         case 3:
-            title = Individual.Affiliation.firstOrder.description()
+            title = Individual.Affiliation.firstOrder.description
         case 4:
-            title = Individual.Affiliation.sith.description()
+            title = Individual.Affiliation.sith.description
         default:
             break
         }
