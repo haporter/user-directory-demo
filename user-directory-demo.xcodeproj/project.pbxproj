@@ -259,7 +259,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-user-directory-demo/Pods-user-directory-demo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-user-directory-demo/Pods-user-directory-demo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
@@ -270,7 +270,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-user-directory-demo/Pods-user-directory-demo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-user-directory-demo/Pods-user-directory-demo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E0533CB5E13667943741EE48 /* [CP] Check Pods Manifest.lock */ = {
