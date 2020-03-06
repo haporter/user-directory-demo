@@ -127,7 +127,7 @@ class DirectoryStateViewController: UIViewController {
             doneButton.widthAnchor.constraint(equalTo: filterView.widthAnchor, multiplier: 1.0),
             doneButton.heightAnchor.constraint(equalToConstant: 50),
             doneButton.centerXAnchor.constraint(equalTo: filterView.centerXAnchor),
-            doneButton.bottomAnchor.constraintEqualToSystemSpacingBelow(filterView.bottomAnchor, multiplier: 1.0)
+            doneButton.bottomAnchor.constraint(equalToSystemSpacingBelow: filterView.bottomAnchor, multiplier: 1.0)
             ])
         
         let pickerView = UIPickerView()
@@ -143,7 +143,7 @@ class DirectoryStateViewController: UIViewController {
             pickerView.widthAnchor.constraint(equalTo: filterView.widthAnchor, multiplier: 1.0),
             pickerView.heightAnchor.constraint(equalToConstant: 150),
             pickerView.centerXAnchor.constraint(equalTo: filterView.centerXAnchor),
-            pickerView.topAnchor.constraintEqualToSystemSpacingBelow(filterView.topAnchor, multiplier: 1.0)
+            pickerView.topAnchor.constraint(equalToSystemSpacingBelow: filterView.topAnchor, multiplier: 1.0)
             ])
         
         self.filterView = filterView

@@ -16,7 +16,7 @@ struct Sorted {
 extension UIViewController {
     public func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
         // add child view controller
-        addChildViewController(viewController)
+        addChild(viewController)
         
         // add child view as subView
         containerView.addSubview(viewController.view)
@@ -26,18 +26,18 @@ extension UIViewController {
         viewController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         
         // notify child view controller
-        viewController.willMove(toParentViewController: self)
+        viewController.willMove(toParent: self)
     }
     
     public func remove(childViewController viewController: UIViewController?) {
         // notify child view controller
-        viewController?.willMove(toParentViewController: nil)
+        viewController?.willMove(toParent: nil)
         
         // remove view from superview
         viewController?.view.removeFromSuperview()
         
         // notify child view controller
-        viewController?.removeFromParentViewController()
+        viewController?.removeFromParent()
     }
 }
 

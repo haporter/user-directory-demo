@@ -129,14 +129,6 @@ class Individual: Object, Codable {
         super.init()
     }
     
-    required init(value: Any, schema: RLMSchema) {
-        super.init(value: value, schema: schema)
-    }
-    
-    required init(realm: RLMRealm, schema: RLMObjectSchema) {
-        super.init(realm: realm, schema: schema)
-    }
-    
     func getProfileImage() {
         guard let imageURL = URL(string: profilePictureURLString) else { return }
         do {
@@ -158,7 +150,7 @@ class Individual: Object, Codable {
     }
     
     private func saveImageToDocs(_ image: UIImage?) {
-        if let image = image, let jpegData = UIImageJPEGRepresentation(image, 0.8) {
+        if let image = image, let jpegData = image.jpegData(compressionQuality: 0.8) {
             let filePath = getDocumentsDirectory().appendingPathComponent(self.firstName + self.lastName + ".jpeg")
             do {
                 try jpegData.write(to: filePath)
